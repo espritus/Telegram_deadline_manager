@@ -10,7 +10,6 @@ from notifiers import get_notifier
 
 from config_reader import config
 
-# Logging -----> (Регистрации информации о работе бота) (Администрация)
 logging.basicConfig(level=logging.INFO)
 
 
@@ -24,7 +23,6 @@ class BotHandler:
     def start_polling(self):
         executor.start_polling(self.dp, skip_updates=True)
 
- # Обратная связь -----> (Обработка файлов)
 
     async def handle_excel_file(self, message):
         try:
@@ -42,8 +40,6 @@ class BotHandler:
             await self.bot.send_message(message.from_user.id, "Произошла ошибка при обработке файла.")
 
 
-#   Обратная связь -----> (Показ результата обработанного файла по срочности)
-
     async def display_dates_and_names_handler(self, message):
         if self.data is not None:
             message_content = ""
@@ -60,10 +56,9 @@ class BotHandler:
                                         "Файл еще не был загружен.")
 
 
-#  Обратная связь по дедлайну -----> (Результат обработанного файла)
 
     async def check_and_send_deadline_notification(self, message):
-        while True:  # Бесконечный цикл для периодического выполнения
+        while True:  
             if self.data is not None:
                 for idx, x in enumerate(self.data[config.datesColumn]):
                     deadline = x - datetime.now()
@@ -88,8 +83,6 @@ class BotHandler:
     async def send_msg(self, user_id, text):
         await self.bot.send_message(user_id, text)
 
-
-# Обратная связь для удаления-----> (Удаление excel )
 
     def delete_file(self, message):
         if self.data is not None:
